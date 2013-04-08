@@ -25,14 +25,16 @@ int has_endl(char* s, int last)
         }
         cur++;
     }
+
     return -1;
 }
 
 void write_ans(char* s, int last)
 {
-    for (int i = 0; i < 2; i++)
+    int i;
+    for (i = 0; i < 2; i++)
     {
-        write(1, s, len);
+        write(1, s, last);
         char c = '\n';
         write(1, &c, 1);
     }
@@ -43,7 +45,6 @@ int main(int argc, char* argv[])
     int k = get_k(argv[1]) + 1;
     char* buf = malloc(k);
     int len = 0, count, eof = 0, temp;
-
 
     while (1)
     {
@@ -74,11 +75,6 @@ int main(int argc, char* argv[])
                 write_ans(buf, len);
                 break;
             }
-            if (len == k)
-            {
-                len = 0;
-
-            }
         }
 
         if (k == len)
@@ -106,9 +102,12 @@ int main(int argc, char* argv[])
                 }
             }
         }
+        if (eof == 1)
+        {
+            break;
+        }
     }
 
-
-
+    free(buf);
 	return 0;
 }
