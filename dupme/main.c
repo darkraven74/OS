@@ -52,17 +52,59 @@ int main(int argc, char* argv[])
         {
             eof = 1;
         }
+        len += count;
         temp = has_endl(buf, len);
         if (temp != -1)
         {
-
+            write_ans(buf, temp);
+            if (temp < len - 1)
+            {
+                memmove(buf, buf + temp + 1, len - temp - 1);
+                len = len - temp - 1;
+            }
+            else
+            {
+                len = 0;
+            }
         }
+        else
+        {
+            if ((len > 0) && (eof == 1))
+            {
+                write_ans(buf, len);
+                break;
+            }
+            if (len == k)
+            {
+                len = 0;
 
-
+            }
+        }
 
         if (k == len)
         {
-
+            len = 0;
+            while (1)
+            {
+                count = read(0, buf + len, k - len);
+                if (count == 0)
+                {
+                    eof = 1;
+                    break;
+                }
+                len += count;
+                temp = has_endl(buf, len);
+                if (temp != -1)
+                {
+                    memmove(buf, buf + temp + 1, len - temp - 1);
+                    len = len - temp - 1;
+                    break;
+                }
+                if (k == len)
+                {
+                    len = 0;
+                }
+            }
         }
     }
 
