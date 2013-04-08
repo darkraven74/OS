@@ -28,11 +28,21 @@ int has_endl(char* s, int last)
     return -1;
 }
 
+void write_ans(char* s, int last)
+{
+    for (int i = 0; i < 2; i++)
+    {
+        write(1, s, len);
+        char c = '\n';
+        write(1, &c, 1);
+    }
+}
+
 int main(int argc, char* argv[])
 {
     int k = get_k(argv[1]) + 1;
     char* buf = malloc(k);
-    int len = 0, count, eof = 0;
+    int len = 0, count, eof = 0, temp;
 
 
     while (1)
@@ -41,6 +51,11 @@ int main(int argc, char* argv[])
         if (count == 0)
         {
             eof = 1;
+        }
+        temp = has_endl(buf, len);
+        if (temp != -1)
+        {
+
         }
 
 
