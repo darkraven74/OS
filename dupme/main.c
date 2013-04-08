@@ -1,7 +1,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-
 int get_k(char* s)
 {
     int ans = 0;
@@ -109,5 +108,5 @@ int main(int argc, char* argv[])
     }
 
     free(buf);
-	return 0;
+    return 0;
 }
