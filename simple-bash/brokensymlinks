@@ -1,0 +1,15 @@
+#!/bin/bash
+
+search()
+{
+    for file in "$@"; do
+        if [ -d "$file" ]; then
+            search "$file"/*
+        fi
+        if [ -h "$file" -a ! -e "$file" ]; then
+            echo "$file"
+        fi
+    done     
+}
+
+search "$@"
