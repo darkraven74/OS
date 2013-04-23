@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -6,6 +7,7 @@
 char* files[2] = {"temp1", "temp2"};
 char* buf;
 int buf_size = 5000;
+
 void run(char** args, int file_id)
 {
     int fds[2];
@@ -23,6 +25,7 @@ void run(char** args, int file_id)
     }
 
     close(fds[1]);
+    waitpid(pid, NULL, 0);
     while (1)
     {
         k = read(fds[0], buf + len, buf_size - len);
@@ -36,11 +39,10 @@ void run(char** args, int file_id)
         }
         len += k;
     }
-
-    
-
+    int f1 = open(files[file_id], O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    write(f1, buf, len);
+    write(1, buf, len); 
 }
-
 
 int main(int argc, char* argv[])
 {
