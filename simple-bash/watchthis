@@ -9,18 +9,19 @@ count=1
 for arg in "$@"; do
     if [ $count != 1 ]; then
         command="$command $arg"
-        count=$count+1
     fi 
+    count=$count+1
 done
 
 touch $file1
 touch $file2
-$command >> $file1
+$command > $file1
 
 while [ 1 ]; do
-    $command >> $file2
+    $command > $file2
     diff $file1 $file2
-    cat $file2 >> $file1
+    cat $file2 > $file1
+    cat $file2
     sleep $inteval
 done
 
