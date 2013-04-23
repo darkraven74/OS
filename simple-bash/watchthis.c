@@ -4,11 +4,40 @@
 
 
 char* files[2] = {"temp1", "temp2"};
-
+char* buf;
+int buf_size = 5000;
 void run(char** args, int file_id)
 {
+    int fds[2];
+    int k, len = 0;
+    pipe(fds);
+    int pid = fork();
+    if (pid == 0)
+    {
+        //child
+        dup2(fds[1], 1);
+        close(fds[0]);
+        close(fds[1]);
+        execvp(args[0], args);
+        exit(0);
+    }
 
+    close(fds[1]);
+    while (1)
+    {
+        k = read(fds[0], buf + len, buf_size - len);
+        if ((buf_size - len) <= 0)
+        {
+            break;
+        }
+        if (k == 0)
+        {
+            break;
+        }
+        len += k;
+    }
 
+    
 
 }
 
@@ -23,6 +52,7 @@ int main(int argc, char* argv[])
     {
         args[i - 2] = argv[i];
     }
+    buf = malloc(buf_size);
     run(args, 1); 
     while (1)
     {
@@ -38,5 +68,6 @@ int main(int argc, char* argv[])
         sleep(update);
     }
     free(args);
+    free(buf);
     return 0;
 }
