@@ -3,21 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-int has_endl(char* s, int last)
-{
-    int cur = 0;
-    while ((s[cur] != 0) && (cur < last))
-    {
-        if (s[cur] == '\n')
-        {
-            return cur;
-        }
-        cur++;
-    }
-
-    return -1;
-}
-
 void write_ans(char* s, int first, int last)
 {
     int i;
@@ -34,6 +19,10 @@ int main(int argc, char* argv[])
 		return 1;
 	}
     int k = atoi(argv[1]) + 1;
+    if (k < 2)
+    {
+    	return 2;
+    }
     char* buf = malloc(k);
     int len = 0, count, eof = 0, ignore = 0;
 
