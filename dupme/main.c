@@ -1,17 +1,7 @@
 #include <unistd.h>
 #include <stdlib.h>
-
-int get_k(char* s)
-{
-    int ans = 0;
-    int cur = 0;
-    while (s[cur] != 0)
-    {
-        ans = ans * 10 + s[cur] - '0';
-        cur++;
-    }
-    return ans;
-}
+#include <stdio.h>
+#include <string.h>
 
 int has_endl(char* s, int last)
 {
@@ -28,20 +18,22 @@ int has_endl(char* s, int last)
     return -1;
 }
 
-void write_ans(char* s, int last)
+void write_ans(char* s, int first, int count)
 {
     int i;
     for (i = 0; i < 2; i++)
     {
-        write(1, s, last);
-        char c = '\n';
-        write(1, &c, 1);
+        write(1, s + first, count);
     }
 }
 
 int main(int argc, char* argv[])
 {
-    int k = get_k(argv[1]) + 1;
+	if (argc < 2)
+	{
+		return 1;
+	}
+    int k = atoi(argv[1]) + 1;
     char* buf = malloc(k);
     int len = 0, count, eof = 0, temp;
 
@@ -53,6 +45,7 @@ int main(int argc, char* argv[])
             eof = 1;
         }
         len += count;
+		printf("%s\n", buf);
         temp = has_endl(buf, len);
         if (temp != -1)
         {
