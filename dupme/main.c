@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
     char* buf = malloc(k);
     int len = 0, count, eof = 0, ignore = 0;
 
-    while (1)
+    while (!eof)
 	{
 		count = read(0, buf + len, k - len);
 		if (count < 1)
@@ -55,10 +55,6 @@ int main(int argc, char* argv[])
 			cur++;
 		}
 		
-		if (eof)
-		{
-			break;
-		}
 		len -= start;
 		memmove(buf, buf + start, len);
 		if (len == k)
