@@ -18,12 +18,12 @@ int has_endl(char* s, int last)
     return -1;
 }
 
-void write_ans(char* s, int first, int count)
+void write_ans(char* s, int first, int last)
 {
     int i;
     for (i = 0; i < 2; i++)
     {
-        write(1, s + first, count);
+        write(1, s + first, last - first + 1);
     }
 }
 
@@ -35,70 +35,49 @@ int main(int argc, char* argv[])
 	}
     int k = atoi(argv[1]) + 1;
     char* buf = malloc(k);
-    int len = 0, count, eof = 0, temp;
+    int len = 0, count, eof = 0, ignore = 0;
 
     while (1)
-    {
-        count = read(0, buf + len, k - len);
-        if (count == 0)
-        {
-            eof = 1;
-        }
-        len += count;
-		printf("%s\n", buf);
-        temp = has_endl(buf, len);
-        if (temp != -1)
-        {
-            write_ans(buf, temp);
-            if (temp < len - 1)
-            {
-                memmove(buf, buf + temp + 1, len - temp - 1);
-                len = len - temp - 1;
-            }
-            else
-            {
-                len = 0;
-            }
-        }
-        else
-        {
-            if ((len > 0) && (eof == 1))
-            {
-                write_ans(buf, len);
-                break;
-            }
-        }
-
-        if (k == len)
-        {
-            len = 0;
-            while (1)
-            {
-                count = read(0, buf + len, k - len);
-                if (count == 0)
-                {
-                    eof = 1;
-                    break;
-                }
-                len += count;
-                temp = has_endl(buf, len);
-                if (temp != -1)
-                {
-                    memmove(buf, buf + temp + 1, len - temp - 1);
-                    len = len - temp - 1;
-                    break;
-                }
-                if (k == len)
-                {
-                    len = 0;
-                }
-            }
-        }
-        if (eof == 1)
-        {
-            break;
-        }
-    }
+	{
+		count = read(0, buf + len, k - len);
+		if (count < 1)
+		{
+			eof = 1;		
+			if (len > 0)
+			{
+				buf[len] = '\n';
+				len++;
+			}
+		}
+		len += count;
+		
+		int cur = 0, start = 0;
+		while (cur < len)
+		{
+			if (buf[cur] == '\n')
+			{
+				if (!ignore)
+				{
+					write_ans(buf, start, cur);
+				}
+				start = cur + 1;
+				ignore = 0;
+			}
+			cur++;
+		}
+		
+		if (eof)
+		{
+			break;
+		}
+		len -= start;
+		memmove(buf, buf + start, len);
+		if (len == k)
+		{
+			len = 0;
+			ignore = 1;
+		}	
+	}
 
     free(buf);
     return 0;
