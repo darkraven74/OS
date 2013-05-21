@@ -12,6 +12,16 @@ void write_ans(char* s, int first, int last)
     }
 }
 
+void* my_malloc(size_t size)
+{
+    void* result = malloc(size);
+    if (result == NULL)
+    {
+        exit(1);
+    }
+    return result;
+}
+
 int main(int argc, char* argv[])
 {
     if (argc < 2)
@@ -23,7 +33,7 @@ int main(int argc, char* argv[])
     {
         return 2;
     }
-    char* buf = malloc(k);
+    char* buf = my_malloc(k);
     int len = 0, count, eof = 0, ignore = 0;
 
     while (!eof)

@@ -7,6 +7,16 @@
 #include <sys/stat.h>
 #include <string.h>
 
+void* my_malloc(size_t size)
+{
+    void* result = malloc(size);
+    if (result == NULL)
+    {
+        exit(1);
+    }
+    return result;
+}
+
 int main(int argc, char* argv[])
 {
     if (argc < 3)
@@ -22,13 +32,13 @@ int main(int argc, char* argv[])
     const char* f_old = "file_old";
     const char* f_new = "file_new";
  
-    char** args = malloc(sizeof(char*) * (argc - 1));
+    char** args = my_malloc(sizeof(char*) * (argc - 1));
     memcpy(args, argv + 2, sizeof(char*) * (argc - 2));
     args[argc - 2] = NULL;
     
     int buf_size = 5000;
-    char* buf = malloc(buf_size);
-    char* old_buf = malloc(buf_size);
+    char* buf = my_malloc(buf_size);
+    char* old_buf = my_malloc(buf_size);
     int old_len = 0;
         
     while (1)
