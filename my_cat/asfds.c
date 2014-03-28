@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     for (int i = 2; i < argc; i++)
     {
         int fd = my_open(argv[i], O_RDONLY, S_IRUSR);
-        args[i - 1] = (char*)malloc(BUF_SIZE);
+        args[i - 1] = (char*)my_malloc(BUF_SIZE);
         sprintf(args[i - 1], "%d", fd);
     }
     int pid = fork();
@@ -73,6 +73,7 @@ int main(int argc, char* argv[])
     for (int i = 2; i < argc; i++)
     {
         my_close(atoi(args[i - 1]));
+        free(args[i - 1]);
     }
     return 0;
 }
